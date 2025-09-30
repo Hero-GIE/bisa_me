@@ -230,6 +230,13 @@ export default function Home() {
   const [selectedCountry, setSelectedCountry] = useState(countries[0]);
   const [showCountryDropdown, setShowCountryDropdown] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [loginData, setLoginData] = useState<any>(null);
+  const [showDashboard, setShowDashboard] = useState(false);
+  const [forgotPhoneNumber, setForgotPhoneNumber] = useState("");
+  const [loginLoading, setLoginLoading] = useState(false);
+  const [signupLoading, setSignupLoading] = useState(false);
   const [signupData, setSignupData] = useState({
     firstName: "",
     lastName: "",
@@ -241,10 +248,6 @@ export default function Home() {
     referralType: "",
     referralCode: "",
   });
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [loginData, setLoginData] = useState<any>(null);
-  const [showDashboard, setShowDashboard] = useState(false);
   const [otpDigits, setOtpDigits] = useState<string[]>([
     "",
     "",
@@ -253,10 +256,6 @@ export default function Home() {
     "",
     "",
   ]);
-
-  // Forgot password state
-  const [forgotPhoneNumber, setForgotPhoneNumber] = useState("");
-  // Add this state to your component
   const [forgotPassword, setForgotPassword] = useState<ForgotPasswordState>({
     isLoading: false,
     error: "",
@@ -461,6 +460,7 @@ export default function Home() {
 
   // Update the handleLoginSubmit function
   const handleLoginSubmit = async () => {
+    setLoginLoading(true); // Start loading
     try {
       // Validate required fields
       if (!phoneNumber || !password) {
@@ -517,6 +517,8 @@ export default function Home() {
       alert(
         "Network error occurred. Please check your connection and try again."
       );
+    } finally {
+      setLoginLoading(false); // Stop loading regardless of outcome
     }
   };
 
@@ -706,6 +708,7 @@ export default function Home() {
 
   // Add this function to handle signup submission
   const handleSignupSubmit = async () => {
+    setSignupLoading(true); // Start loading
     try {
       // Validate required fields
       if (
@@ -776,6 +779,8 @@ export default function Home() {
       alert(
         "Network error occurred. Please check your connection and try again."
       );
+    } finally {
+      setSignupLoading(false);
     }
   };
 
@@ -2030,30 +2035,59 @@ export default function Home() {
                     </div>
 
                     {/* Login Button - Updated with deep orange background when active */}
+                    {/* Login Button with Loading Indicator */}
                     <button
                       onClick={handleLoginSubmit}
-                      disabled={!phoneNumber.trim()}
+                      disabled={!phoneNumber.trim() || loginLoading}
                       className={`w-full py-4 rounded-lg font-semibold transition-all duration-200 transform shadow-lg flex items-center justify-center space-x-2 ${
-                        !phoneNumber.trim()
+                        !phoneNumber.trim() || loginLoading
                           ? "bg-orange-300 text-white cursor-not-allowed"
                           : "bg-orange-600 hover:bg-orange-700 text-white hover:scale-105 hover:shadow-xl"
                       }`}
                     >
-                      <span>SIGN IN</span>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="w-5 h-5"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M9 5l7 7-7 7"
-                        />
-                      </svg>
+                      {loginLoading ? (
+                        <>
+                          <svg
+                            className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                          >
+                            <circle
+                              className="opacity-25"
+                              cx="12"
+                              cy="12"
+                              r="10"
+                              stroke="currentColor"
+                              strokeWidth="4"
+                            ></circle>
+                            <path
+                              className="opacity-75"
+                              fill="currentColor"
+                              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                            ></path>
+                          </svg>
+                          <span>SIGNING IN...</span>
+                        </>
+                      ) : (
+                        <>
+                          <span>SIGN IN</span>
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="w-5 h-5"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M9 5l7 7-7 7"
+                            />
+                          </svg>
+                        </>
+                      )}
                     </button>
                   </div>
                 )}
@@ -2432,25 +2466,59 @@ export default function Home() {
                       </label>
                     </div>
 
+                    {/* Sign Up Button with Loading Indicator */}
                     <button
                       onClick={handleSignupSubmit}
-                      className="px-6 py-3 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white rounded-lg font-semibold transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl flex items-center space-x-2 mx-auto"
+                      disabled={signupLoading}
+                      className={`w-full py-4 rounded-lg font-semibold transition-all duration-200 transform shadow-lg flex items-center justify-center space-x-2 ${
+                        signupLoading
+                          ? "bg-orange-300 text-white cursor-not-allowed"
+                          : "bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white hover:scale-105 hover:shadow-xl"
+                      }`}
                     >
-                      <span>SIGN UP</span>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="w-5 h-5"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M9 5l7 7-7 7"
-                        />
-                      </svg>
+                      {signupLoading ? (
+                        <>
+                          <svg
+                            className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                          >
+                            <circle
+                              className="opacity-25"
+                              cx="12"
+                              cy="12"
+                              r="10"
+                              stroke="currentColor"
+                              strokeWidth="4"
+                            ></circle>
+                            <path
+                              className="opacity-75"
+                              fill="currentColor"
+                              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                            ></path>
+                          </svg>
+                          <span>CREATING ACCOUNT...</span>
+                        </>
+                      ) : (
+                        <>
+                          <span>SIGN UP</span>
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="w-5 h-5"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M9 5l7 7-7 7"
+                            />
+                          </svg>
+                        </>
+                      )}
                     </button>
                   </div>
                 )}
