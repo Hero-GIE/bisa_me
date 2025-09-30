@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import Dashboard from "./dashboard";
+import { API_BASE_URL } from "./lib/api_config";
 
 // Country data with reliable flag image URLs
 const countries = [
@@ -296,7 +297,7 @@ export default function Home() {
 
       // Make API call to forgot password endpoint
       const response = await fetch(
-        "http://195.35.36.122:1991/api/authentication/forgot-password",
+        `${API_BASE_URL}/api/authentication/forgot-password`,
         {
           method: "POST",
           headers: {
@@ -355,8 +356,8 @@ export default function Home() {
     }
   };
 
-  // Add this function to handle password reset verification
-  const handleResetPasswordVerify = async () => {
+  // SIMPLIFIED: Handle complete password reset in one step
+  const handleResetPassword = async () => {
     if (!verification.code || verification.code.length !== 6) {
       setVerification((prev) => ({
         ...prev,
@@ -365,65 +366,6 @@ export default function Home() {
       return;
     }
 
-    setVerification((prev) => ({ ...prev, isLoading: true, error: "" }));
-
-    try {
-      const response = await fetch(
-        "http://195.35.36.122:1991/api/authentication/verify-reset-password",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            phoneNumber: loginData?.phoneNumber,
-            countryShortName: loginData?.countryShortName,
-            otp: verification.code,
-          }),
-        }
-      );
-
-      const result = await response.json();
-
-      if (response.ok) {
-        setForgotPassword((prev) => ({
-          ...prev,
-          step: "reset",
-          success: "Verification successful! Please set your new password.",
-        }));
-        setVerification((prev) => ({
-          ...prev,
-          success: "Verification successful!",
-        }));
-      } else {
-        const getErrorMessage = (err: ApiErrorResponse): string => {
-          if (err.message) return err.message;
-          if (typeof err.error === "string") return err.error;
-          if (err.error && typeof err.error === "object") {
-            return JSON.stringify(err.error);
-          }
-          return "Verification failed. Please try again.";
-        };
-
-        setVerification((prev) => ({
-          ...prev,
-          error: getErrorMessage(result),
-        }));
-      }
-    } catch (error) {
-      console.error("Reset password verification error:", error);
-      setVerification((prev) => ({
-        ...prev,
-        error:
-          "Network error occurred. Please check your connection and try again.",
-      }));
-    } finally {
-      setVerification((prev) => ({ ...prev, isLoading: false }));
-    }
-  };
-
-  // Add this function to handle the actual password reset
-  const handleResetPassword = async () => {
     if (!signupData.password || !signupData.confirmPassword) {
       setForgotPassword((prev) => ({
         ...prev,
@@ -440,22 +382,28 @@ export default function Home() {
       return;
     }
 
+    setVerification((prev) => ({ ...prev, isLoading: true, error: "" }));
     setForgotPassword((prev) => ({ ...prev, isLoading: true, error: "" }));
 
     try {
+      const requestBody = {
+        phoneNumber: loginData?.phoneNumber,
+        countryShortName: loginData?.countryShortName,
+        otp: verification.code,
+        newPassword: signupData.password,
+        confirmPassword: signupData.confirmPassword,
+      };
+
+      console.log("Sending complete reset request:", requestBody);
+
       const response = await fetch(
-        "http://195.35.36.122:1991/api/authentication/reset-password",
+        `${API_BASE_URL}/api/authentication/reset-password`,
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({
-            phoneNumber: loginData?.phoneNumber,
-            countryShortName: loginData?.countryShortName,
-            newPassword: signupData.password,
-            confirmPassword: signupData.confirmPassword,
-          }),
+          body: JSON.stringify(requestBody),
         }
       );
 
@@ -464,8 +412,12 @@ export default function Home() {
       if (response.ok) {
         setForgotPassword((prev) => ({
           ...prev,
-          success:
-            "Password reset successfully! You can now login with your new password.",
+          success: "Password reset successfully! You can now login.",
+          step: "input",
+        }));
+        setVerification((prev) => ({
+          ...prev,
+          success: "Password reset successful!",
         }));
 
         // Reset form and go back to login
@@ -482,6 +434,8 @@ export default function Home() {
             password: "",
             confirmPassword: "",
           }));
+          setForgotPhoneNumber("");
+          setOtpDigits(["", "", "", "", "", ""]);
         }, 3000);
       } else {
         let errorMessage = "Failed to reset password. Please try again.";
@@ -494,19 +448,20 @@ export default function Home() {
           errorMessage = String(result.error);
         }
 
-        setForgotPassword((prev) => ({
+        setVerification((prev) => ({
           ...prev,
           error: errorMessage,
         }));
       }
     } catch (error) {
       console.error("Reset password error:", error);
-      setForgotPassword((prev) => ({
+      setVerification((prev) => ({
         ...prev,
         error:
           "Network error occurred. Please check your connection and try again.",
       }));
     } finally {
+      setVerification((prev) => ({ ...prev, isLoading: false }));
       setForgotPassword((prev) => ({ ...prev, isLoading: false }));
     }
   };
@@ -530,16 +485,13 @@ export default function Home() {
       console.log("Login data:", loginPayload); // For debugging
 
       // Make API call to login endpoint
-      const response = await fetch(
-        "http://195.35.36.122:1991/api/authentication/login",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(loginPayload),
-        }
-      );
+      const response = await fetch(`${API_BASE_URL}/api/authentication/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(loginPayload),
+      });
 
       const result = await response.json();
 
@@ -616,7 +568,7 @@ export default function Home() {
       const token = localStorage.getItem("authToken");
 
       const response = await fetch(
-        "http://195.35.36.122:1991/api/authentication/verify-otp",
+        `${API_BASE_URL}/api/authentication/verify-otp`,
         {
           method: "POST",
           headers: {
@@ -691,7 +643,7 @@ export default function Home() {
       const token = localStorage.getItem("authToken");
 
       const response = await fetch(
-        "http://195.35.36.122:1991/api/authentication/resend-otp",
+        `${API_BASE_URL}/api/authentication/resend-otp`,
         {
           method: "POST",
           headers: {
@@ -804,7 +756,7 @@ export default function Home() {
 
       // Make API call with your actual base URL
       const response = await fetch(
-        "http://195.35.36.122:1991/api/authentication/signup",
+        `${API_BASE_URL}/api/authentication/signup`,
         {
           method: "POST",
           headers: {
@@ -1406,21 +1358,21 @@ export default function Home() {
               </div>
             )}
 
+            {/* Forgot Password Container */}
             {activeTab === "forgot" && (
               <div className="space-y-6">
                 {/* Forgot Password Header */}
                 <div className="text-center mb-8">
                   <h2 className="text-3xl font-bold text-black mb-2">
                     {forgotPassword.step === "input" && "Forgot Password"}
-                    {forgotPassword.step === "verification" &&
-                      "Verify Your Account"}
-                    {forgotPassword.step === "reset" && "Reset Your Password"}
+                    {forgotPassword.step === "verification" && "Reset Password"}
+                    {forgotPassword.step === "reset" && "Set New Password"}
                   </h2>
                   <p className="text-gray-700">
                     {forgotPassword.step === "input" &&
                       "Enter your mobile phone number associated with your BisaMe account"}
                     {forgotPassword.step === "verification" &&
-                      "Enter the verification code sent to your phone"}
+                      "Enter the verification code and your new password"}
                     {forgotPassword.step === "reset" &&
                       "Enter your new password"}
                   </p>
@@ -1589,7 +1541,7 @@ export default function Home() {
                   </>
                 )}
 
-                {/* Step 2: Verification Code */}
+                {/* Step 2: Verification Code + Password */}
                 {forgotPassword.step === "verification" && (
                   <>
                     {/* Verification Code Input */}
@@ -1647,96 +1599,6 @@ export default function Home() {
                       </div>
                     </div>
 
-                    {/* Verify Button */}
-                    <button
-                      onClick={handleResetPasswordVerify}
-                      disabled={
-                        verification.isLoading || verification.code.length !== 6
-                      }
-                      className={`w-full py-4 rounded-lg font-semibold transition-all duration-200 transform shadow-lg flex items-center justify-center space-x-2 ${
-                        verification.isLoading || verification.code.length !== 6
-                          ? "bg-orange-300 text-white cursor-not-allowed"
-                          : "bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white hover:scale-105 hover:shadow-xl"
-                      }`}
-                    >
-                      {verification.isLoading ? (
-                        <>
-                          <svg
-                            className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                          >
-                            <circle
-                              className="opacity-25"
-                              cx="12"
-                              cy="12"
-                              r="10"
-                              stroke="currentColor"
-                              strokeWidth="4"
-                            ></circle>
-                            <path
-                              className="opacity-75"
-                              fill="currentColor"
-                              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                            ></path>
-                          </svg>
-                          <span>VERIFYING...</span>
-                        </>
-                      ) : (
-                        <>
-                          <span>VERIFY CODE</span>
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="w-5 h-5"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                            />
-                          </svg>
-                        </>
-                      )}
-                    </button>
-
-                    {/* Resend Code Section */}
-                    <div className="text-center pt-4 border-t border-gray-200">
-                      <p className="text-gray-600 mb-3">
-                        Didn't receive the code?
-                      </p>
-                      <span
-                        onClick={() => {
-                          if (
-                            verification.canResend &&
-                            !verification.isLoading
-                          ) {
-                            handleForgotPasswordSubmit(); // Resend the code
-                          }
-                        }}
-                        className={`px-6 py-2 font-semibold transition-all duration-200 cursor-pointer ${
-                          !verification.canResend || verification.isLoading
-                            ? "text-gray-500 cursor-not-allowed"
-                            : "text-orange-500 hover:text-orange-600"
-                        }`}
-                      >
-                        {verification.isLoading
-                          ? "SENDING..."
-                          : verification.countdown > 0
-                          ? `Resend in ${verification.countdown}s`
-                          : "Resend code"}
-                      </span>
-                    </div>
-                  </>
-                )}
-
-                {/* Step 3: Reset Password */}
-                {forgotPassword.step === "reset" && (
-                  <>
                     {/* New Password Field */}
                     <div className="space-y-2">
                       <label className="text-sm font-medium text-gray-700">
@@ -1861,14 +1723,22 @@ export default function Home() {
                     {/* Reset Password Button */}
                     <button
                       onClick={handleResetPassword}
-                      disabled={forgotPassword.isLoading}
+                      disabled={
+                        verification.isLoading ||
+                        verification.code.length !== 6 ||
+                        !signupData.password ||
+                        !signupData.confirmPassword
+                      }
                       className={`w-full py-4 rounded-lg font-semibold transition-all duration-200 transform shadow-lg flex items-center justify-center space-x-2 ${
-                        forgotPassword.isLoading
+                        verification.isLoading ||
+                        verification.code.length !== 6 ||
+                        !signupData.password ||
+                        !signupData.confirmPassword
                           ? "bg-orange-300 text-white cursor-not-allowed"
                           : "bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white hover:scale-105 hover:shadow-xl"
                       }`}
                     >
-                      {forgotPassword.isLoading ? (
+                      {verification.isLoading ? (
                         <>
                           <svg
                             className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
@@ -1912,6 +1782,34 @@ export default function Home() {
                         </>
                       )}
                     </button>
+
+                    {/* Resend Code Section */}
+                    <div className="text-center pt-4 border-t border-gray-200">
+                      <p className="text-gray-600 mb-3">
+                        Didn't receive the code?
+                      </p>
+                      <span
+                        onClick={() => {
+                          if (
+                            verification.canResend &&
+                            !verification.isLoading
+                          ) {
+                            handleForgotPasswordSubmit(); // Resend the code
+                          }
+                        }}
+                        className={`px-6 py-2 font-semibold transition-all duration-200 cursor-pointer ${
+                          !verification.canResend || verification.isLoading
+                            ? "text-gray-500 cursor-not-allowed"
+                            : "text-orange-500 hover:text-orange-600"
+                        }`}
+                      >
+                        {verification.isLoading
+                          ? "SENDING..."
+                          : verification.countdown > 0
+                          ? `Resend in ${verification.countdown}s`
+                          : "Resend code"}
+                      </span>
+                    </div>
                   </>
                 )}
 
@@ -1953,6 +1851,7 @@ export default function Home() {
                 </p>
               </div>
             )}
+
             {/* Login/Signup Container - Shows when activeTab is NOT 'forgot' */}
             {activeTab !== "forgot" && activeTab !== "verify" && (
               <>
@@ -2191,7 +2090,7 @@ export default function Home() {
                       </p>
                     </div>
 
-                    {/* Full Name Field */}
+                    {/* First Name Field */}
                     <div className="space-y-2">
                       <label className="text-sm font-medium text-gray-700">
                         First Name
@@ -2209,7 +2108,7 @@ export default function Home() {
                       </div>
                     </div>
 
-                    {/* Full Name Field */}
+                    {/* Last Name Field */}
                     <div className="space-y-2">
                       <label className="text-sm font-medium text-gray-700">
                         Last Name
@@ -2476,10 +2375,9 @@ export default function Home() {
                       </label>
                       <div className="relative">
                         <select
-                          value={signupData.referralType} // Changed from referralSource
-                          onChange={
-                            (e) =>
-                              handleSignupChange("referralType", e.target.value) // Changed from referralSource
+                          value={signupData.referralType}
+                          onChange={(e) =>
+                            handleSignupChange("referralType", e.target.value)
                           }
                           className="w-full pl-4 pr-10 py-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-200 bg-gray-50 appearance-none"
                         >
