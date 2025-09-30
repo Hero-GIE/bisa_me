@@ -3,7 +3,6 @@
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import Dashboard from "./dashboard";
-import { API_BASE_URL } from "./lib/api_config";
 
 // Country data with reliable flag image URLs
 const countries = [
@@ -296,16 +295,13 @@ export default function Home() {
       console.log("Forgot password data:", forgotPasswordPayload); // For debugging
 
       // Make API call to forgot password endpoint
-      const response = await fetch(
-        `${API_BASE_URL}/api/authentication/forgot-password`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(forgotPasswordPayload),
-        }
-      );
+      const response = await fetch(`/api/authentication/forgot-password`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(forgotPasswordPayload),
+      });
 
       const result = await response.json();
 
@@ -396,16 +392,13 @@ export default function Home() {
 
       console.log("Sending complete reset request:", requestBody);
 
-      const response = await fetch(
-        `${API_BASE_URL}/api/authentication/reset-password`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(requestBody),
-        }
-      );
+      const response = await fetch(`/api/authentication/reset-password`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestBody),
+      });
 
       const result = await response.json();
 
@@ -484,8 +477,8 @@ export default function Home() {
 
       console.log("Login data:", loginPayload); // For debugging
 
-      // Make API call to login endpoint
-      const response = await fetch(`${API_BASE_URL}/api/authentication/login`, {
+      // In your handleLoginSubmit function:
+      const response = await fetch(`/api/authentication/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -567,20 +560,17 @@ export default function Home() {
     try {
       const token = localStorage.getItem("authToken");
 
-      const response = await fetch(
-        `${API_BASE_URL}/api/authentication/verify-otp`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            phoneNumber: loginData?.phoneNumber,
-            otp: verification.code,
-          }),
-        }
-      );
+      const response = await fetch(`/api/authentication/verify-otp`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          phoneNumber: loginData?.phoneNumber,
+          otp: verification.code,
+        }),
+      });
 
       const result: ApiErrorResponse = await response.json();
 
@@ -642,19 +632,16 @@ export default function Home() {
     try {
       const token = localStorage.getItem("authToken");
 
-      const response = await fetch(
-        `${API_BASE_URL}/api/authentication/resend-otp`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            phoneNumber: loginData?.phoneNumber,
-          }),
-        }
-      );
+      const response = await fetch(`/api/authentication/resend-otp`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          phoneNumber: loginData?.phoneNumber,
+        }),
+      });
 
       const result: ApiErrorResponse = await response.json();
 
@@ -755,16 +742,13 @@ export default function Home() {
       console.log("Sending data to API:", apiData); // For debugging
 
       // Make API call with your actual base URL
-      const response = await fetch(
-        `${API_BASE_URL}/api/authentication/signup`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(apiData),
-        }
-      );
+      const response = await fetch(`/api/authentication/signup`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(apiData),
+      });
 
       const result = await response.json();
 
