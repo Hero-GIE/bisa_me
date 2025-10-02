@@ -793,29 +793,28 @@ export default function Home() {
       {/* Notification Bar */}
       <div className="bg-black text-white py-2 px-4 text-sm">
         <div className="max-w-7xl mx-auto flex items-center justify-center">
-          {/* Centered Notification */}
-          <span className="text-white text-3xl text-center font-bold">
+          <span className="text-white text-lg sm:text-xl md:text-2xl lg:text-3xl text-center font-bold">
             NOTIFICATION BAR
           </span>
         </div>
       </div>
 
       {/* Top Navigation Bar */}
-      <nav className="bg-gradient-to-r from-blue-800 to-blue-700 text-white px-6 py-3 shadow-lg">
+      <nav className="bg-gradient-to-r from-blue-800 to-blue-700 text-white px-4 sm:px-6 py-3 shadow-lg">
         <div className="max-w-7xl mx-auto">
-          {/* Top Row - Welcome & Social Media */}
-          <div className="flex items-center justify-between mb-3 pb-3 border-b border-blue-600">
+          {/* Top Row - Stack on mobile */}
+          <div className="flex flex-col sm:flex-row items-center justify-between mb-3 pb-3 border-b border-blue-600 space-y-2 sm:space-y-0">
             {/* Left Side - Welcome Message */}
-            <div className="flex items-center space-x-4 text-sm">
-              <span className="text-white text-md">
+            <div className="flex items-center space-x-2 sm:space-x-4 text-sm">
+              <span className="text-white text-sm sm:text-md">
                 Welcome to BisaMe online store
               </span>
             </div>
 
             {/* Right Side - Social Media Links */}
-            <div className="flex items-center space-x-4">
-              <span className="text-white text-sm">Follow us:</span>
-              <div className="flex items-center space-x-3">
+            <div className="flex items-center space-x-3 sm:space-x-4">
+              <span className="text-white text-xs sm:text-sm">Follow us:</span>
+              <div className="flex items-center space-x-2 sm:space-x-3">
                 {/* Twitter/X */}
                 <a
                   href="#"
@@ -890,11 +889,11 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Bottom Row - Main Navigation Content */}
-          <div className="flex items-center justify-between">
+          {/* Bottom Row - Stack search on mobile */}
+          <div className="flex flex-col lg:flex-row items-center justify-between space-y-4 lg:space-y-0">
             {/* Logo */}
-            <div className="flex items-center">
-              <div className="text-3xl font-bold flex items-center">
+            <div className="flex items-center order-1 lg:order-1">
+              <div className="text-2xl sm:text-3xl font-bold flex items-center">
                 <span className="text-white bg-blue-900 px-2 py-1 rounded-lg">
                   B
                 </span>
@@ -910,10 +909,10 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Search Section */}
-            <div className="flex items-center space-x-3 flex-1 max-w-2xl mx-8">
-              {/* Location Search - Reduced width */}
-              <div className="relative w-48">
+            {/* Search Section - Full width on mobile */}
+            <div className="flex flex-col sm:flex-row items-center space-y-3 sm:space-y-0 sm:space-x-3 flex-1 max-w-2xl mx-0 lg:mx-8 order-3 lg:order-2 w-full lg:w-auto">
+              {/* Location Search - Adjust width for mobile */}
+              <div className="relative w-full sm:w-40 lg:w-48">
                 <div className="absolute left-3 top-1/2 transform -translate-y-1/2">
                   <svg
                     className="w-5 h-5 text-blue-500"
@@ -958,11 +957,11 @@ export default function Home() {
               </div>
 
               {/* Main Search - Takes remaining width */}
-              <div className="relative flex-1">
+              <div className="relative flex-1 w-full">
                 <input
                   type="text"
                   placeholder="I am looking for..."
-                  className="w-full pl-4 pr-12 py-4 rounded-lg bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent shadow-sm transition-all duration-200"
+                  className="w-full pl-4 pr-12 py-3 sm:py-4 rounded-lg bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent shadow-sm transition-all duration-200 text-sm sm:text-base"
                 />
                 <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
                   <svg
@@ -982,19 +981,19 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Right Section */}
-            <div className="flex items-center space-x-3">
-              {/* Sell Button */}
-              <button className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-10 py-4 rounded-lg font-semibold transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl">
+            {/* Right Section - Adjust spacing for mobile */}
+            <div className="flex items-center space-x-2 sm:space-x-3 order-2 lg:order-3">
+              {/* Sell Button - Adjust size for mobile */}
+              <button className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-4 sm:px-6 lg:px-10 py-2 sm:py-3 lg:py-4 rounded-lg font-semibold transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl text-sm sm:text-base">
                 <span>SELL</span>
               </button>
 
-              {/* Wishlist */}
+              {/* Wishlist and Profile - Adjust size */}
               <button className="p-2 hover:bg-blue-600 rounded-lg transition-all duration-200 transform hover:scale-110 group">
                 <svg
-                  className="w-6 h-6 text-white group-hover:text-orange-300 transition-colors duration-200"
-                  fill="none"
-                  stroke="currentColor"
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="w-5 h-5 sm:w-6 sm:h-6 text-white group-hover:text-orange-400 transition-colors duration-200"
+                  fill="currentColor"
                   viewBox="0 0 24 24"
                 >
                   <path
@@ -1009,7 +1008,7 @@ export default function Home() {
               {/* Profile */}
               <button className="p-2 hover:bg-blue-600 rounded-lg transition-all duration-200 transform hover:scale-110 group">
                 <svg
-                  className="w-6 h-6 text-orange-400"
+                  className="w-5 h-5 sm:w-6 sm:h-6 text-orange-400"
                   fill="currentColor"
                   viewBox="0 0 24 24"
                 >
@@ -1028,13 +1027,13 @@ export default function Home() {
 
       {/* Secondary Navigation Bar */}
       <nav className="bg-white shadow-lg border-b">
-        <div className="max-w-7xl mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 sm:py-4">
+          <div className="flex flex-col lg:flex-row items-center justify-between space-y-4 lg:space-y-0">
             {/* Left Section */}
-            <div className="flex items-center space-x-4 ml-4">
+            <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-4 lg:ml-4">
               {/* Services Dropdown */}
               <div className="relative group">
-                <button className="flex items-center space-x-2 text-gray-700 bg-blue-50 border border-blue-200  transition-all duration-200 font-semibold px-3 py-2 rounded-lg hover:bg-white hover:border-blue-300 hover:shadow-md">
+                <button className="flex items-center space-x-2 text-gray-700 bg-blue-50 border border-blue-200 transition-all duration-200 font-semibold px-3 py-2 rounded-lg hover:bg-white hover:border-blue-300 hover:shadow-md text-sm">
                   <span>Services</span>
                   <svg
                     className="w-4 h-4 transition-transform duration-200 group-hover:rotate-180"
@@ -1053,9 +1052,9 @@ export default function Home() {
               </div>
 
               {/* Buy/Sell */}
-              <button className="bg-white border border-blue-200 text-blue-600 hover:bg-gradient-to-r hover:from-blue-600 hover:to-blue-700 hover:text-white px-4 py-2 rounded-lg font-semibold transition-all duration-200 transform hover:scale-105 shadow-sm hover:shadow-lg flex items-center space-x-2">
+              <button className="bg-white border border-blue-200 text-blue-600 hover:bg-gradient-to-r hover:from-blue-600 hover:to-blue-700 hover:text-white px-3 sm:px-4 py-2 rounded-lg font-semibold transition-all duration-200 transform hover:scale-105 shadow-sm hover:shadow-lg flex items-center space-x-2 text-sm">
                 <svg
-                  className="w-5 h-5"
+                  className="w-4 h-4 sm:w-5 sm:h-5"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -1071,7 +1070,7 @@ export default function Home() {
               </button>
 
               {/* Customer Support */}
-              <div className="flex items-center space-x-2 text-gray-700 hover:text-blue-600 transition-all duration-200 cursor-pointer px-3 py-2 rounded-lg hover:bg-blue-50 border border-transparent hover:border-blue-200">
+              <div className="hidden sm:flex items-center space-x-2 text-gray-700 hover:text-blue-600 transition-all duration-200 cursor-pointer px-3 py-2 rounded-lg hover:bg-blue-50 border border-transparent hover:border-blue-200">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="w-6 h-6 text-black"
@@ -1084,7 +1083,8 @@ export default function Home() {
               </div>
 
               {/* Need Help */}
-              <div className="flex items-center space-x-2 text-gray-700 hover:text-blue-600 transition-all duration-200 cursor-pointer px-3 py-2 rounded-lg hover:bg-blue-50 border border-transparent hover:border-blue-200">
+              <div className="hidden sm:flex items-center space-x-2 text-gray-700 hover:text-blue-600 transition-all duration-200 cursor-pointer px-3 py-2 rounded-lg hover:bg-blue-50 border border-transparent hover:border-blue-200">
+                {" "}
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="w-6 h-6"
@@ -1113,11 +1113,12 @@ export default function Home() {
               </div>
             </div>
             {/* Right Section */}
-            <div className="flex items-center space-x-6">
+            <div className="flex items-center space-x-4 sm:space-x-6">
               {/* Phone Number */}
-              <div className="flex items-center space-x-3 text-gray-700 hover:text-blue-600 transition-all duration-200 cursor-pointer px-4 py-2 rounded-xl hover:bg-blue-50 border border-transparent hover:border-blue-200">
+              <div className="flex items-center space-x-2 sm:space-x-3 text-gray-700 hover:text-blue-600 transition-all duration-200 cursor-pointer px-3 sm:px-4 py-2 rounded-xl hover:bg-blue-50 border border-transparent hover:border-blue-200">
+                {" "}
                 <svg
-                  className="w-5 h-5"
+                  className="w-4 h-4 sm:w-5 sm:h-5"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -1130,15 +1131,17 @@ export default function Home() {
                   />
                 </svg>
                 <div className="text-right">
-                  <div className="font-semibold">+233 123 456 789</div>
+                  <div className="font-semibold text-gray-600 text-sm sm:text-base">
+                    +233 123 456 789
+                  </div>
                 </div>
               </div>
 
               {/* Messages with Floating Notification Badge */}
               <div className="relative">
-                <button className="w-12 h-12 flex items-center justify-center bg-transparent border border-gray-300 rounded-lg transition-all duration-200 transform hover:scale-110 hover:border-gray-400 group">
+                <button className="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center bg-transparent border border-gray-300 rounded-lg transition-all duration-200 transform hover:scale-110 hover:border-gray-400 group">
                   <svg
-                    className="w-6 h-6 text-gray-600 group-hover:text-orange-500 transition-colors duration-200"
+                    className="w-5 h-5 sm:w-6 sm:h-6 text-gray-600 group-hover:text-orange-500 transition-colors duration-200"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -1169,9 +1172,9 @@ export default function Home() {
       </nav>
 
       {/* Main Content - Login/Signup Container */}
-      <main className="max-w-7xl mx-auto px-6 py-12">
-        <div className="flex justify-center items-center min-h-[60vh]">
-          <div className="bg-white rounded-lg shadow-2xl p-8 w-full max-w-md border border-gray-100">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
+        <div className="flex justify-center items-center min-h-[50vh] sm:min-h-[60vh]">
+          <div className="bg-white rounded-lg shadow-2xl p-4 sm:p-6 lg:p-8 w-full max-w-md border border-gray-100 mx-4">
             {/* Verification Container */}
             {activeTab === "verify" && (
               <div className="space-y-6">
@@ -1197,7 +1200,7 @@ export default function Home() {
                   <label className="text-sm font-medium text-gray-700 text-center block">
                     Enter Verification Code
                   </label>
-                  <div className="flex justify-center gap-3">
+                  <div className="flex justify-center gap-2 sm:gap-3">
                     {otpDigits.map((digit, index) => (
                       <input
                         key={index}
@@ -1259,7 +1262,7 @@ export default function Home() {
                           );
                           nextInput?.focus();
                         }}
-                        className="w-14 h-14 text-center text-2xl font-bold border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all duration-200 bg-gray-50"
+                        className="w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 text-center text-xl sm:text-2xl font-bold border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all duration-200 bg-gray-50"
                       />
                     ))}
                   </div>
@@ -1271,7 +1274,7 @@ export default function Home() {
                   disabled={
                     verification.isLoading || verification.code.length !== 6
                   }
-                  className={`w-full py-4 rounded-lg font-semibold transition-all duration-200 transform shadow-lg flex items-center justify-center space-x-2 ${
+                  className={`w-full py-3 sm:py-4 rounded-lg font-semibold transition-all duration-200 transform shadow-lg flex items-center justify-center space-x-2 text-sm sm:text-base ${
                     verification.isLoading || verification.code.length !== 6
                       ? "bg-orange-300 text-white cursor-not-allowed"
                       : "bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white hover:scale-105 hover:shadow-xl"
@@ -1477,7 +1480,7 @@ export default function Home() {
                     <button
                       onClick={handleForgotPasswordSubmit}
                       disabled={forgotPassword.isLoading || isSendCodeDisabled}
-                      className={`w-full py-4 rounded-lg font-semibold transition-all duration-200 transform shadow-lg flex items-center justify-center space-x-2 ${
+                      className={`w-full py-3 sm:py-4 rounded-lg font-semibold transition-all duration-200 transform shadow-lg flex items-center justify-center space-x-2 text-sm sm:text-base ${
                         forgotPassword.isLoading || isSendCodeDisabled
                           ? "bg-orange-300 text-white cursor-not-allowed"
                           : "bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white hover:scale-105 hover:shadow-xl"
@@ -1718,7 +1721,7 @@ export default function Home() {
                         !signupData.password ||
                         !signupData.confirmPassword
                       }
-                      className={`w-full py-4 rounded-lg font-semibold transition-all duration-200 transform shadow-lg flex items-center justify-center space-x-2 ${
+                      className={`w-full py-3 sm:py-4 rounded-lg font-semibold transition-all duration-200 transform shadow-lg flex items-center justify-center space-x-2 text-sm sm:text-base ${
                         verification.isLoading ||
                         verification.code.length !== 6 ||
                         !signupData.password ||
@@ -1811,7 +1814,7 @@ export default function Home() {
                       </span>
                       <button
                         onClick={() => setActiveTab("login")}
-                        className="text-blue-600 hover:text-blue-700 font-semibold transition-colors duration-200"
+                        className="text-blue-600 font-semibold transition-colors duration-200 hover:text-orange-600 hover:underline"
                       >
                         Sign In
                       </button>
@@ -1822,7 +1825,7 @@ export default function Home() {
                       </span>
                       <button
                         onClick={() => setActiveTab("signup")}
-                        className="text-blue-600 hover:text-blue-700 font-semibold transition-colors duration-200"
+                        className="text-blue-600 font-semibold transition-colors duration-200 hover:text-orange-600 hover:underline"
                       >
                         Sign Up
                       </button>
@@ -1833,7 +1836,7 @@ export default function Home() {
                 {/* Customer Service Note */}
                 <p className="text-md text-center text-gray-700 mt-4">
                   You may contact{" "}
-                  <span className="text-red-700 font-semibold">
+                  <span className="text-red-700 font-semibold cursor-pointer">
                     Customer Service
                   </span>{" "}
                   for help restoring access to your account
@@ -2034,12 +2037,11 @@ export default function Home() {
                       </div>
                     </div>
 
-                    {/* Login Button - Updated with deep orange background when active */}
                     {/* Login Button with Loading Indicator */}
                     <button
                       onClick={handleLoginSubmit}
                       disabled={!phoneNumber.trim() || loginLoading}
-                      className={`w-full py-4 rounded-lg font-semibold transition-all duration-200 transform shadow-lg flex items-center justify-center space-x-2 ${
+                      className={`w-full py-3 sm:py-4 rounded-lg font-semibold transition-all duration-200 transform shadow-lg flex items-center justify-center space-x-2 text-sm sm:text-base ${
                         !phoneNumber.trim() || loginLoading
                           ? "bg-orange-300 text-white cursor-not-allowed"
                           : "bg-orange-600 hover:bg-orange-700 text-white hover:scale-105 hover:shadow-xl"
@@ -2225,28 +2227,28 @@ export default function Home() {
 
                         {/* Country Dropdown */}
                         {showCountryDropdown && (
-                          <div className="absolute left-0 top-full mt-1 w-72 max-h-60 bg-white border border-gray-300 rounded-lg shadow-xl z-50 overflow-y-auto">
+                          <div className="absolute left-0 top-full mt-1 w-64 sm:w-72 max-h-60 bg-white border border-gray-300 rounded-lg shadow-xl z-50 overflow-y-auto">
                             {countries.map((country) => (
                               <div
                                 key={country.code}
-                                className={`flex items-center space-x-3 px-4 py-3 cursor-pointer hover:bg-blue-50 transition-colors duration-200 ${
+                                className={`flex items-center space-x-2 sm:space-x-3 px-3 sm:px-4 py-2 sm:py-3 cursor-pointer hover:bg-blue-50 transition-colors duration-200 ${
                                   selectedCountry.code === country.code
                                     ? "bg-blue-50 border-l-4 border-l-orange-500"
                                     : ""
                                 }`}
                                 onClick={() => handleCountrySelect(country)}
                               >
-                                <div className="w-6 h-4 rounded overflow-hidden flex items-center justify-center border border-gray-200">
+                                <div className="w-5 h-4 sm:w-6 sm:h-4 rounded overflow-hidden flex items-center justify-center">
                                   <img
                                     src={country.flag}
                                     alt={`${country.name} flag`}
-                                    className="w-6 h-4 object-cover"
+                                    className="w-5 h-4 sm:w-6 sm:h-4 object-cover"
                                   />
                                 </div>
-                                <span className="text-gray-700 font-medium flex-1">
+                                <span className="text-gray-700 font-medium flex-1 text-sm sm:text-base">
                                   {country.name}
                                 </span>
-                                <span className="text-gray-500 text-sm">
+                                <span className="text-gray-500 text-xs sm:text-sm">
                                   {country.dialCode}
                                 </span>
                               </div>
@@ -2470,7 +2472,7 @@ export default function Home() {
                     <button
                       onClick={handleSignupSubmit}
                       disabled={signupLoading}
-                      className={`w-full py-4 rounded-lg font-semibold transition-all duration-200 transform shadow-lg flex items-center justify-center space-x-2 ${
+                      className={`w-full py-3 sm:py-4 rounded-lg font-semibold transition-all duration-200 transform shadow-lg flex items-center justify-center space-x-2 text-sm sm:text-base ${
                         signupLoading
                           ? "bg-orange-300 text-white cursor-not-allowed"
                           : "bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white hover:scale-105 hover:shadow-xl"
@@ -2529,10 +2531,10 @@ export default function Home() {
       </main>
 
       {/* Footer */}
-      <footer className="bg-gradient-to-br from-gray-900 to-black text-white pt-12 pb-8">
-        <div className="max-w-7xl mx-auto px-6">
+      <footer className="bg-gradient-to-br from-gray-900 to-black text-white pt-8 sm:pt-12 pb-6 sm:pb-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
           {/* Main Footer Content */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 mb-6 sm:mb-8">
             {/* Company Info */}
             <div className="space-y-4">
               <div className="flex items-center space-x-2 mb-4">
@@ -2615,7 +2617,8 @@ export default function Home() {
 
             {/* Quick Links */}
             <div className="space-y-4">
-              <h3 className="text-xl font-bold text-orange-400 mb-4 relative inline-block">
+              <h3 className="text-lg sm:text-xl font-bold text-orange-400 mb-3 sm:mb-4">
+                {" "}
                 Quick Links
                 <span className="absolute -bottom-1 left-0 w-1/2 h-0.5 bg-orange-400 transform scale-x-0 hover:scale-x-100 transition-transform duration-300"></span>
               </h3>
@@ -2642,8 +2645,9 @@ export default function Home() {
             </div>
 
             {/* Download App */}
-            <div className="space-y-4">
-              <h3 className="text-xl font-bold text-orange-400 mb-4">
+            <div className="space-y-4 text-center md:text-left">
+              <h3 className="text-lg sm:text-xl font-bold text-orange-400 mb-3 sm:mb-4">
+                {" "}
                 Get It Now
               </h3>
               <div className="space-y-4">
@@ -2695,10 +2699,11 @@ export default function Home() {
 
             {/* Popular Tags */}
             <div className="space-y-4">
-              <h3 className="text-xl font-bold text-orange-400 mb-4">
+              <h3 className="text-lg sm:text-xl font-bold text-orange-400 mb-3 sm:mb-4">
+                {" "}
                 Popular Tags
               </h3>
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-2 justify-center md:justify-start">
                 {[
                   "Game",
                   "iPhone",
@@ -2716,7 +2721,7 @@ export default function Home() {
                 ].map((tag, index) => (
                   <span
                     key={tag}
-                    className="px-3 py-2 bg-gray-800 rounded-lg text-sm text-gray-300 hover:bg-orange-500 hover:text-white transition-all duration-300 transform hover:scale-105 cursor-pointer hover:-translate-y-1"
+                    className="px-2 py-1 sm:px-3 sm:py-2 bg-gray-800 rounded-lg text-xs sm:text-sm text-gray-300 hover:bg-orange-500 hover:text-white transition-all duration-300 transform hover:scale-105 cursor-pointer hover:-translate-y-1"
                     style={{ animationDelay: `${index * 60}ms` }}
                   >
                     {tag}
@@ -2727,12 +2732,12 @@ export default function Home() {
           </div>
 
           {/* Bottom Bar */}
-          <div className="border-t border-gray-700 pt-6 mt-8">
-            <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-              <div className="text-gray-400 text-sm">
+          <div className="border-t border-gray-700 pt-4 sm:pt-6 mt-6 sm:mt-8">
+            <div className="flex flex-col md:flex-row justify-between items-center space-y-3 md:space-y-0 text-center md:text-left">
+              <div className="text-gray-400 text-xs sm:text-sm">
                 © 2024 BisaMe. All rights reserved.
               </div>
-              <div className="flex space-x-6">
+              <div className="flex space-x-4 sm:space-x-6 flex-wrap justify-center gap-2 sm:gap-0">
                 {["Privacy Policy", "Terms of Use", "Cookie Policy"].map(
                   (item) => (
                     <span
